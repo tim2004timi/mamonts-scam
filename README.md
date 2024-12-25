@@ -1,0 +1,1 @@
+# mamonts-scam
