@@ -1,13 +1,13 @@
 services:
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    container_name: frontend
-    ports:
-      - "5173:5173"
-    networks:
-      - dev
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile
+  #   container_name: frontend
+  #   ports:
+  #     - "5173:5173"
+  #   networks:
+  #     - dev
 
   backend:
     build:
@@ -32,8 +32,13 @@ services:
       - POSTGRES_DB=mamonts-scam
     volumes:
       - ./postgres-data:/var/lib/postgresql/data
+      - ./db-config/postgresql.conf:/etc/postgresql/postgresql.conf
+      - ./db-config/pg_hba.conf:/etc/postgresql/pg_hba.conf
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf
     networks:
       - dev
+    ports:
+      - "5432:5432"
 
 volumes:
   postgres-data:
