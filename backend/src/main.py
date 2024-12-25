@@ -1,14 +1,15 @@
 from fastapi import FastAPI, Request, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
-from starlette.responses import JSONResponse
-import logging
+
 import asyncio
 
 from .auth.router import router as auth_router
 from .users.router import router as users_router
 from .events.router import router as events_router
 from .teams.router import router as teams_router
+from .current_odds.router import router as current_odds_router
+from .bets.router import router as bets_router
+from .payouts.router import router as payouts_router
 
 from .database import Base
 from .config import DEV, origins
@@ -36,6 +37,9 @@ main_router.include_router(auth_router)
 main_router.include_router(users_router)
 main_router.include_router(events_router)
 main_router.include_router(teams_router)
+main_router.include_router(current_odds_router)
+main_router.include_router(bets_router)
+main_router.include_router(payouts_router)
 
 app.include_router(main_router)
 

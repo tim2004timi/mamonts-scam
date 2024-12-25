@@ -22,3 +22,5 @@ class Team(Base):
         foreign_keys="[Event.second_team_id]",
         back_populates="second_team",
     )
+    bets: Mapped[List["Bet"]] = relationship("Bet", back_populates="win_team")
+

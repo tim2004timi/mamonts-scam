@@ -21,3 +21,7 @@ class User(Base):
     created_at: Mapped[datetime] = mapped_column(
         DateTime, nullable=False, default=datetime.utcnow
     )
+
+    bets: Mapped[List["Bet"]] = relationship("Bet", back_populates="user")
+    payouts: Mapped[List["Payout"]] = relationship("Payout", back_populates="user")
+

@@ -1,44 +1,44 @@
 from datetime import datetime
-from typing import Optional
+from typing import Optional, List
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, Field, ConfigDict
+from decimal import Decimal
 
 from ..teams.schemas import Team
+from ..payouts.schemas import Payout
+from ..current_odds.schemas import CurrentOdds
+from ..bets.schemas import Bet
 
 
 class EventBase(BaseModel):
     event_name: str
     event_date: datetime
-    event_end_date: datetime | None
     event_type: str
-    status: str
+
+
+class EventCreate(EventBase):
     first_team_id: int
     second_team_id: int
 
 
-class EventCreate(EventBase):
-    pass
-
-
-class EventUpdatePartial(BaseModel):
-    event_name: Optional[str] = None
-    event_date: Optional[datetime] = None
+class EventUpdate(BaseModel):
     event_end_date: Optional[datetime] = None
-    event_type: Optional[str] = None
-    status: Optional[str] = None
-    first_team_id: Optional[int] = None
-    second_team_id: Optional[int] = None
+    winning_team_id: Optional[int] = None
 
 
 class Event(EventBase):
     id: int
-    first_team: Team
-    second_team: Team
+    event_end_date: Optional[datetime]
+    status: str
+    first_team: Optional[Team]
+    second_team: Optional[Team]
+    current_odds: Optional["CurrentOdds"]
+    bets: Optional[List["Bet"]]
 
     model_config = ConfigDict(from_attributes=True)
 
 
 class EventsList(BaseModel):
-    events: list[Event]
+    events: List[Event]
     total_pages: int
     current_page: int
